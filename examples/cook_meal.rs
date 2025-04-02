@@ -42,12 +42,15 @@ impl std::error::Error for Error {}
 fn cook_meal(raw_cooking_time: String) -> Result<(), Error> {
     const PERFECT_COOKING_TIME: u32 = 10;
 
+    // Parse the cooking time.
     let cooking_time = raw_cooking_time.parse::<u32>().map_err(|e| {
+        // Wrap the error in a `Wrapp` and add a source.
         Error::InvalidCookingTime
             .into_wrapp()
             .with_source(Box::new(e))
     })?;
 
+    // Compare the cooking time to the perfect cooking time and return the corresponding error if needed.
     match cooking_time.cmp(&PERFECT_COOKING_TIME) {
         std::cmp::Ordering::Greater => Err(Error::Overcooked {
             excess_time: cooking_time - PERFECT_COOKING_TIME,
@@ -65,6 +68,7 @@ fn cook_meal(raw_cooking_time: String) -> Result<(), Error> {
 }
 
 fn main() -> ExitCode {
+    // Get the cooking time from the command line arguments.
     let raw_cooking_time = match std::env::args().nth(1) {
         Some(raw_cooking_time) => raw_cooking_time,
         None => {
@@ -73,6 +77,7 @@ fn main() -> ExitCode {
         }
     };
 
+    // Cook the meal and handle any errors.
     if let Err(e) = cook_meal(raw_cooking_time) {
         eprintln!("error: {}", e.full_display());
         return ExitCode::FAILURE;
