@@ -1,6 +1,6 @@
 use std::process::ExitCode;
 
-use thaterror::prelude::*;
+use wrapp::prelude::*;
 
 #[derive(Debug)]
 pub enum Error {
@@ -44,7 +44,7 @@ fn cook_meal(raw_cooking_time: String) -> Result<(), Error> {
 
     let cooking_time = raw_cooking_time.parse::<u32>().map_err(|e| {
         Error::InvalidCookingTime
-            .into_that_error()
+            .into_wrapp()
             .with_source(Box::new(e))
     })?;
 

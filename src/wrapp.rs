@@ -1,4 +1,4 @@
-pub struct ThatError<E>
+pub struct Wrapp<E>
 where
     E: std::error::Error,
 {
@@ -6,7 +6,7 @@ where
     source: Option<Box<dyn std::error::Error>>,
 }
 
-impl<E> ThatError<E>
+impl<E> Wrapp<E>
 where
     E: std::error::Error + 'static,
 {
@@ -34,7 +34,7 @@ fn full_display(error: &dyn std::error::Error) -> String {
     }
 }
 
-impl<E> std::fmt::Display for ThatError<E>
+impl<E> std::fmt::Display for Wrapp<E>
 where
     E: std::error::Error,
 {
@@ -43,7 +43,7 @@ where
     }
 }
 
-impl<E> std::fmt::Debug for ThatError<E>
+impl<E> std::fmt::Debug for Wrapp<E>
 where
     E: std::error::Error,
 {
@@ -56,7 +56,7 @@ where
     }
 }
 
-impl<E> std::error::Error for ThatError<E>
+impl<E> std::error::Error for Wrapp<E>
 where
     E: std::error::Error + 'static,
 {
