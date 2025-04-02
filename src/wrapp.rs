@@ -1,3 +1,4 @@
+/// A simple wrapper for errors that allows you to easily chain errors.
 pub struct Wrapp<E>
 where
     E: std::error::Error,
@@ -10,6 +11,7 @@ impl<E> Wrapp<E>
 where
     E: std::error::Error + 'static,
 {
+    /// Create a new `Wrapp` from an error.
     pub fn new(error: E) -> Self {
         Self {
             error,
@@ -17,11 +19,13 @@ where
         }
     }
 
+    /// Add a source to the error.
     pub fn with_source(mut self, source: Box<dyn std::error::Error>) -> Self {
         self.source = Some(source);
         self
     }
 
+    /// Print the error with the full chain of sources.
     pub fn full_display(&self) -> String {
         full_display(self)
     }
