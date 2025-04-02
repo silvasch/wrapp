@@ -1,3 +1,6 @@
+#![warn(missing_docs)]
+#![warn(clippy::missing_docs_in_private_items)]
+
 //! Add additional functionality to Rust errors using a wrapper.
 //!
 //! # Example

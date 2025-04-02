@@ -1,9 +1,13 @@
+//! A simple wrapper for errors that allows you to easily chain errors.
+
 /// A simple wrapper for errors that allows you to easily chain errors.
 pub struct Wrapp<E>
 where
     E: std::error::Error,
 {
+    /// The error that is being wrapped.
     error: E,
+    /// The (optional) source of the error.
     source: Option<Box<dyn std::error::Error>>,
 }
 
@@ -31,6 +35,7 @@ where
     }
 }
 
+/// Recursively display the error and its sources.
 fn full_display(error: &dyn std::error::Error) -> String {
     match error.source() {
         Some(source) => format!("{}\nfrom: {}", error, full_display(source)),
