@@ -74,7 +74,7 @@ fn main() -> ExitCode {
     };
 
     if let Err(e) = cook_meal(raw_cooking_time) {
-        eprintln!("error: {}", e);
+        eprintln!("error: {}", e.full_display());
         return ExitCode::FAILURE;
     }
 

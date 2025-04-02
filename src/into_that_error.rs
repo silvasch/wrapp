@@ -9,7 +9,7 @@ where
 
 impl<E> IntoThatError<E> for E
 where
-    E: std::error::Error,
+    E: std::error::Error + 'static,
 {
     fn into_that_error(self) -> ThatError<E> {
         ThatError::new(self)
@@ -18,7 +18,7 @@ where
 
 impl<E> From<E> for ThatError<E>
 where
-    E: std::error::Error,
+    E: std::error::Error + 'static,
 {
     fn from(value: E) -> Self {
         value.into_that_error()

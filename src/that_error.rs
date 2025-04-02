@@ -8,7 +8,7 @@ where
 
 impl<E> ThatError<E>
 where
-    E: std::error::Error,
+    E: std::error::Error + 'static,
 {
     pub fn new(error: E) -> Self {
         Self {
@@ -21,6 +21,17 @@ where
         self.source = Some(source);
         self
     }
+
+    pub fn full_display(&self) -> String {
+        full_display(self)
+    }
+}
+
+fn full_display(error: &dyn std::error::Error) -> String {
+    match error.source() {
+        Some(source) => format!("{}\nfrom: {}", error, full_display(source)),
+        None => error.to_string(),
+    }
 }
 
 impl<E> std::fmt::Display for ThatError<E>
@@ -28,11 +39,7 @@ where
     E: std::error::Error,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.error)?;
-        if let Some(source) = &self.source {
-            write!(f, "\nfrom: {}", source)?;
-        }
-        Ok(())
+        write!(f, "{}", self.error)
     }
 }
 
